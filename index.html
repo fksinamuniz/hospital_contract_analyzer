@@ -19,6 +19,8 @@
             --danger: #e74c3c;
             --light: #ecf0f1;
             --dark: #2c3e50;
+            --tcu-blue: #005c97; /* Cor específica para a seção TCU */
+            --spreadsheet-header: #e6f2ff;
         }
         
         body {
@@ -40,15 +42,20 @@
             transition: transform 0.3s;
         }
         
-        .card:hover {
-            transform: translateY(-5px);
-        }
-        
         .card-header {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
             border-radius: 10px 10px 0 0 !important;
             font-weight: 600;
+        }
+
+        /* Estilo específico para cards TCU */
+        .card-header-tcu {
+            background: linear-gradient(135deg, var(--tcu-blue), #363795);
+            color: white;
+            border-radius: 10px 10px 0 0 !important;
+            font-weight: 600;
+            padding: 10px 15px;
         }
         
         .sidebar {
@@ -84,25 +91,13 @@
             font-weight: 700;
         }
         
-        .kpi-good {
-            color: var(--success);
-        }
-        
-        .kpi-warning {
-            color: var(--warning);
-        }
-        
-        .kpi-danger {
-            color: var(--danger);
-        }
+        .kpi-good { color: var(--success); }
+        .kpi-warning { color: var(--warning); }
+        .kpi-danger { color: var(--danger); }
         
         .progress {
             height: 10px;
             margin-top: 10px;
-            border-radius: 5px;
-        }
-        
-        .progress-bar {
             border-radius: 5px;
         }
         
@@ -120,8 +115,35 @@
             margin-bottom: 15px;
         }
         
-        .comparison-table th {
-            background-color: var(--light);
+        .spreadsheet-table {
+            font-size: 0.9rem;
+            border-collapse: collapse;
+        }
+        
+        .spreadsheet-table th {
+            background-color: var(--spreadsheet-header);
+            border: 1px solid #dee2e6;
+            vertical-align: middle;
+        }
+        
+        .spreadsheet-table td {
+            border: 1px solid #dee2e6;
+            vertical-align: middle;
+        }
+
+        .spreadsheet-table input {
+            border: none;
+            width: 100%;
+            background: transparent;
+        }
+        
+        .spreadsheet-section-title {
+            background-color: var(--primary);
+            color: white;
+            padding: 5px 10px;
+            margin-top: 20px;
+            margin-bottom: 0;
+            font-weight: bold;
         }
         
         .action-item {
@@ -136,36 +158,22 @@
             border-left-color: var(--success);
             background-color: rgba(39, 174, 96, 0.1);
         }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            border: none;
+
+        /* Estilos para Achados de Auditoria */
+        .audit-finding {
+            border-left: 4px solid var(--tcu-blue);
+            background-color: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 0 5px 5px 0;
         }
-        
-        .legend {
-            display: flex;
-            justify-content: center;
-            margin-top: 10px;
-        }
-        
-        .legend-item {
-            display: flex;
-            align-items: center;
-            margin: 0 10px;
-        }
-        
-        .legend-color {
-            width: 15px;
-            height: 15px;
-            margin-right: 5px;
-            border-radius: 3px;
-        }
-        
-        footer {
-            background-color: var(--primary);
-            color: white;
-            padding: 20px 0;
-            margin-top: 40px;
+        .audit-code {
+            font-weight: bold;
+            color: var(--tcu-blue);
+            background: #eef2f7;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.8rem;
         }
         
         .dashboard-section {
@@ -183,7 +191,7 @@
         <div class="container">
             <a class="navbar-brand" href="#">
                 <i class="fas fa-hospital-alt me-2"></i>
-                Dashboard de Gestão - SEMSA Parauapebas
+                Gestão HGP - Parauapebas (ASELC)
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -210,12 +218,11 @@
                             <i class="fas fa-hospital-user fa-3x text-primary"></i>
                         </div>
                         <h5>Hospital Geral de Parauapebas (HGP)</h5>
-                        <p class="text-muted">CNES: 2615746 (ASELC/OSS)</p>
-                        <!-- Pontuação baseada na média dos indicadores de Jan-Abr 2025 -->
+                        <p class="text-muted">CNES: 2615746</p>
                         <div class="progress">
                             <div class="progress-bar bg-success" role="progressbar" style="width: 84%"></div>
                         </div>
-                        <small class="text-muted">Pontuação: 8.4/10</small>
+                        <small class="text-muted">Performance: 8.4/10</small>
                     </div>
                     
                     <ul class="nav flex-column">
@@ -225,13 +232,18 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="coleta">
+                                <i class="fas fa-table me-2"></i> Planilha de Coleta
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="#" data-section="indicadores">
                                 <i class="fas fa-chart-line me-2"></i> Indicadores
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" data-section="conformidade">
-                                <i class="fas fa-clipboard-check me-2"></i> Conformidade
+                            <a class="nav-link" href="#" data-section="auditoria-tcu">
+                                <i class="fas fa-gavel me-2"></i> Auditoria TCU
                             </a>
                         </li>
                         <li class="nav-item">
@@ -244,9 +256,9 @@
                                 <i class="fas fa-stethoscope me-2"></i> Novos Serviços
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" data-section="relatorio">
-                                <i class="fas fa-file-pdf me-2"></i> Relatório
+                         <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="conformidade">
+                                <i class="fas fa-clipboard-check me-2"></i> Conformidade
                             </a>
                         </li>
                     </ul>
@@ -255,31 +267,24 @@
 
             <!-- Main Content -->
             <div class="col-md-9">
+                
                 <!-- Dashboard Section -->
                 <div class="dashboard-section active" id="dashboard">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h2>Dashboard de Avaliação</h2>
-                        <div class="btn-group">
-                            <button class="btn btn-outline-primary" onclick="location.reload()">
-                                <i class="fas fa-sync-alt me-1"></i> Atualizar
-                            </button>
-                            <button class="btn btn-primary">
-                                <i class="fas fa-download me-1"></i> Exportar
-                            </button>
-                        </div>
+                        <h2>Visão Geral</h2>
+                        <button class="btn btn-outline-primary btn-sm" onclick="document.querySelector('[data-section=coleta]').click()">
+                            <i class="fas fa-edit me-1"></i> Ir para Coleta de Dados
+                        </button>
                     </div>
                     
-                    <!-- KPIs atualizados com dados dos PDFs (Média Jan-Abr 2025) -->
+                    <!-- KPIs -->
                     <div class="row">
                         <div class="col-md-3">
                             <div class="card kpi-card">
                                 <div class="card-body">
                                     <i class="fas fa-procedures fa-2x text-primary mb-2"></i>
-                                    <h5>Ocupação de Leitos</h5>
+                                    <h5>Ocupação</h5>
                                     <div class="kpi-value kpi-warning">74%</div>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 74%"></div>
-                                    </div>
                                     <small>Meta: 85%</small>
                                 </div>
                             </div>
@@ -288,11 +293,8 @@
                             <div class="card kpi-card">
                                 <div class="card-body">
                                     <i class="fas fa-user-doctor fa-2x text-primary mb-2"></i>
-                                    <h5>Atend. Ambulatorial</h5>
+                                    <h5>Ambulatório</h5>
                                     <div class="kpi-value kpi-danger">59%</div>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 59%"></div>
-                                    </div>
                                     <small>Meta: 85%</small>
                                 </div>
                             </div>
@@ -300,563 +302,398 @@
                         <div class="col-md-3">
                             <div class="card kpi-card">
                                 <div class="card-body">
-                                    <i class="fas fa-bacteria fa-2x text-primary mb-2"></i>
-                                    <h5>Infecção Hospitalar</h5>
-                                    <div class="kpi-value kpi-good">0.8%</div>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 8%"></div>
-                                    </div>
-                                    <small>Meta: < 5%</small>
+                                    <i class="fas fa-file-medical-alt fa-2x text-primary mb-2"></i>
+                                    <h5>Produção AIH</h5>
+                                    <div class="kpi-value kpi-good">202k</div>
+                                    <small>2025 (Jan-Set)</small>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-3">
                             <div class="card kpi-card">
                                 <div class="card-body">
-                                    <i class="fas fa-heart-pulse fa-2x text-primary mb-2"></i>
-                                    <h5>Mortalidade Hosp.</h5>
-                                    <div class="kpi-value kpi-good">2.9%</div>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 58%"></div>
-                                    </div>
-                                    <small>Meta: < 3.5%</small>
+                                    <i class="fas fa-coins fa-2x text-primary mb-2"></i>
+                                    <h5>Repasse</h5>
+                                    <div class="kpi-value text-dark" style="font-size: 1.2rem; margin-top: 10px;">R$ 14.28 Mi</div>
+                                    <small>Mensal (4º TA)</small>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="row mt-4">
                         <div class="col-md-8">
-                            <div class="card">
+                             <div class="card">
                                 <div class="card-header">
-                                    <h5 class="mb-0">Desempenho por Eixo (Jan-Abr 2025)</h5>
+                                    <h5 class="mb-0">Produção SUS x Metas (2025)</h5>
                                 </div>
                                 <div class="card-body">
-                                    <canvas id="radarChart" height="250"></canvas>
+                                    <canvas id="dashboardMixChart" height="250"></canvas>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5 class="mb-0">Status do Contrato (20230226)</h5>
+                                    <h5 class="mb-0">Aderência Auditoria TCU</h5>
                                 </div>
                                 <div class="card-body">
-                                    <div class="metric-card">
-                                        <h6>Instrumento Formal</h6>
-                                        <div class="d-flex justify-content-between">
-                                            <span>Vigência</span>
-                                            <span class="badge bg-success">Válido</span>
-                                        </div>
-                                        <small class="text-muted">Até: 03/07/2026 (3º TA)</small>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span>Transparência (SE)</span>
+                                        <span class="badge bg-warning">Parcial</span>
                                     </div>
+                                    <div class="progress mb-3"><div class="progress-bar bg-warning" style="width: 60%"></div></div>
                                     
-                                    <div class="metric-card">
-                                        <h6>Documento Descritivo</h6>
-                                        <div class="d-flex justify-content-between">
-                                            <span>Status</span>
-                                            <span class="badge bg-success">Repactuado (4º TA)</span>
-                                        </div>
-                                        <small class="text-muted">Última atualização: 30/06/2025</small>
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span>Contratualização (CA)</span>
+                                        <span class="badge bg-success">Conforme</span>
                                     </div>
-                                    
-                                    <div class="metric-card">
-                                        <h6>Comissão de Acompanhamento</h6>
-                                        <div class="d-flex justify-content-between">
-                                            <span>Status</span>
-                                            <span class="badge bg-success">Ativa</span>
-                                        </div>
-                                        <small class="text-muted">Memo 1486/2025 emitido</small>
+                                    <div class="progress mb-3"><div class="progress-bar bg-success" style="width: 90%"></div></div>
+
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span>Efetividade (EF)</span>
+                                        <span class="badge bg-info">Em Análise</span>
                                     </div>
+                                    <div class="progress mb-3"><div class="progress-bar bg-info" style="width: 40%"></div></div>
                                     
-                                    <div class="metric-card">
-                                        <h6>Executora (5º TA)</h6>
-                                        <div class="d-flex justify-content-between">
-                                            <span>CNPJ</span>
-                                            <span class="badge bg-info">Filial</span>
-                                        </div>
-                                        <small class="text-muted">CNPJ: 09.055.340/0004-37</small>
+                                    <button class="btn btn-outline-primary w-100 btn-sm mt-2" onclick="document.querySelector('[data-section=auditoria-tcu]').click()">Ver Detalhes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Planilha de Coleta Section -->
+                <div class="dashboard-section" id="coleta">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2>Planilha de Coleta de Dados</h2>
+                        <div>
+                            <button class="btn btn-success" onclick="alert('Dados salvos com sucesso! (Simulação)')">
+                                <i class="fas fa-save me-1"></i> Salvar
+                            </button>
+                            <button class="btn btn-secondary" onclick="alert('Exportando para Excel... (Simulação)')">
+                                <i class="fas fa-file-excel me-1"></i> Exportar .XLSX
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <div class="spreadsheet-section-title">1. Produção SIH/SUS (Fonte: CSV Importado)</div>
+                                <table class="table table-bordered spreadsheet-table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 40%">Grupo de Procedimento</th>
+                                            <th style="width: 20%">2024 (Total)</th>
+                                            <th style="width: 20%">2025 (Jan-Set)</th>
+                                            <th style="width: 20%">Variação (%)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>02 Procedimentos com finalidade diagnóstica</td>
+                                            <td><input type="text" value="36.527" readonly></td>
+                                            <td><input type="text" value="55.058" readonly></td>
+                                            <td class="text-success">+50,7%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>03 Procedimentos clínicos</td>
+                                            <td><input type="text" value="59.469" readonly></td>
+                                            <td><input type="text" value="95.703" readonly></td>
+                                            <td class="text-success">+60,9%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>04 Procedimentos cirúrgicos</td>
+                                            <td><input type="text" value="5.606" readonly></td>
+                                            <td><input type="text" value="5.671" readonly></td>
+                                            <td class="text-success">+1,1%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>06 Medicamentos</td>
+                                            <td><input type="text" value="162" readonly></td>
+                                            <td><input type="text" value="115" readonly></td>
+                                            <td class="text-danger">-29,0%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>07 Órteses, próteses e materiais especiais</td>
+                                            <td><input type="text" value="1.971" readonly></td>
+                                            <td><input type="text" value="1.643" readonly></td>
+                                            <td class="text-danger">-16,6%</td>
+                                        </tr>
+                                        <tr>
+                                            <td>08 Ações complementares da atenção à saúde</td>
+                                            <td><input type="text" value="35.622" readonly></td>
+                                            <td><input type="text" value="44.499" readonly></td>
+                                            <td class="text-success">+24,9%</td>
+                                        </tr>
+                                        <tr class="table-secondary fw-bold">
+                                            <td>TOTAL GERAL</td>
+                                            <td>139.357</td>
+                                            <td>202.689</td>
+                                            <td>+45,4%</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <div class="spreadsheet-section-title">2. Metas Contratuais e Indicadores (Base: Relatórios Jan-Abr 2025)</div>
+                                <table class="table table-bordered spreadsheet-table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Indicador</th>
+                                            <th>Meta Contratual</th>
+                                            <th>Realizado (Média)</th>
+                                            <th>Coleta Manual (Mês Atual)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Taxa de Ocupação Hospitalar</td>
+                                            <td>≥ 85%</td>
+                                            <td>74,0%</td>
+                                            <td><input type="text" placeholder="Digite %"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Atendimento Ambulatorial (Aderência)</td>
+                                            <td>≥ 85%</td>
+                                            <td>59,0%</td>
+                                            <td><input type="text" placeholder="Digite %"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Taxa de Infecção Hospitalar</td>
+                                            <td>< 5%</td>
+                                            <td>0,8%</td>
+                                            <td><input type="text" placeholder="Digite %"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Taxa de Mortalidade Hospitalar</td>
+                                            <td>< 3,5%</td>
+                                            <td>2,9%</td>
+                                            <td><input type="text" placeholder="Digite %"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Pesquisa de Satisfação</td>
+                                            <td>≥ 85%</td>
+                                            <td>85,0%</td>
+                                            <td><input type="text" placeholder="Digite %"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <div class="spreadsheet-section-title">3. Financeiro - Repasses (Base: 4º Termo Aditivo)</div>
+                                <table class="table table-bordered spreadsheet-table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Descrição</th>
+                                            <th>Percentual</th>
+                                            <th>Valor Contratado (R$)</th>
+                                            <th>Valor Pago (Mês Ref.)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Custeio Fixo</td>
+                                            <td>70%</td>
+                                            <td>R$ 9.996.940,80</td>
+                                            <td><input type="text" placeholder="R$ 0,00"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Custeio Variável (Sujeito a Glosa)</td>
+                                            <td>28%</td>
+                                            <td>R$ 3.998.776,32</td>
+                                            <td><input type="text" placeholder="R$ 0,00"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Investimento</td>
+                                            <td>2%</td>
+                                            <td>R$ 285.626,88</td>
+                                            <td><input type="text" placeholder="R$ 0,00"></td>
+                                        </tr>
+                                        <tr class="table-secondary fw-bold">
+                                            <td>TOTAL MENSAL</td>
+                                            <td>100%</td>
+                                            <td>R$ 14.281.344,00</td>
+                                            <td>R$ 0,00</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NOVA SEÇÃO: Auditoria TCU -->
+                <div class="dashboard-section" id="auditoria-tcu">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2>Referencial de Auditoria (TCU)</h2>
+                        <span class="badge bg-primary">Manual de Auditoria em Contratualização</span>
+                    </div>
+                    <p class="text-muted">Critérios de avaliação baseados no "Referencial de Auditoria em Contratualização de Hospitais no SUS" do TCU.</p>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card border-primary">
+                                <div class="card-header card-header-tcu">
+                                    <i class="fas fa-search me-2"></i> Eixo: Transparência (SE)
+                                </div>
+                                <div class="card-body">
+                                    <p class="small"><strong>Critério:</strong> Garantia de transparência e acesso às informações (Art. 13 Dec. 7.508/2011).</p>
+                                    <hr>
+                                    <div class="d-flex justify-content-between">
+                                        <span>Aderência</span>
+                                        <span class="badge bg-warning">Parcial</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-primary">
+                                <div class="card-header card-header-tcu">
+                                    <i class="fas fa-file-contract me-2"></i> Eixo: Contratual (CA)
+                                </div>
+                                <div class="card-body">
+                                    <p class="small"><strong>Critério:</strong> Previsão de canais formais de acesso à informação e denúncia (Port. 2/2017).</p>
+                                    <hr>
+                                    <div class="d-flex justify-content-between">
+                                        <span>Aderência</span>
+                                        <span class="badge bg-success">Conforme</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card border-primary">
+                                <div class="card-header card-header-tcu">
+                                    <i class="fas fa-users me-2"></i> Eixo: Efetividade (EF)
+                                </div>
+                                <div class="card-body">
+                                    <p class="small"><strong>Critério:</strong> Efetivação do controle social e avaliação dos canais de denúncia.</p>
+                                    <hr>
+                                    <div class="d-flex justify-content-between">
+                                        <span>Aderência</span>
+                                        <span class="badge bg-info">Em Análise</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h5 class="mb-0">Ações Prioritárias (Base: Memo 1486/2025)</h5>
-                                    <span class="badge bg-warning">2 Pendentes</span>
+
+                    <div class="card mt-4">
+                        <div class="card-header card-header-tcu">
+                            <h5 class="mb-0">Matriz de Achados e Evidências (TCU)</h5>
+                        </div>
+                        <div class="card-body">
+                            
+                            <div class="audit-finding">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h6 class="text-primary mb-0">1. Transparência e Acesso à Informação</h6>
+                                    <span class="audit-code">EV1.SE</span>
                                 </div>
-                                <div class="card-body">
-                                    <div class="action-item">
-                                        <div class="d-flex justify-content-between">
-                                            <h6>Melhorar Aderência Ambulatorial</h6>
-                                            <span class="badge bg-danger">Alta Prioridade</span>
-                                        </div>
-                                        <p class="mb-1">Indicador com média de 59% (Jan-Abr 2025), meta contratual de 85%.</p>
-                                        <small class="text-muted">Prazo: 30/08/2025 | Responsável: Diretoria ASELC</small>
-                                    </div>
-                                    
-                                    <div class="action-item">
-                                        <div class="d-flex justify-content-between">
-                                            <h6>Plano de Implantação de Novos Serviços</h6>
-                                            <span class="badge bg-warning">Média Prioridade</span>
-                                        </div>
-                                        <p class="mb-1">Acompanhar cronogramas de Hemodinâmica, UTI Adulta e UTI Pediátrica (Jun-Out 2025).</p>
-                                        <small class="text-muted">Prazo: 31/10/2025 | Responsável: CAF / ASELC</small>
-                                    </div>
-                                    
-                                    <div class="action-item completed">
-                                        <div class="d-flex justify-content-between">
-                                            <h6>Revisão Financeira (4º TA)</h6>
-                                            <span class="badge bg-success">Concluído</span>
-                                        </div>
-                                        <p class="mb-1">Redução de R$ 500mil/mês e redistribuição de parcelas (70% Fixo, 28% Variável, 2% Invest.).</p>
-                                        <small class="text-muted">Concluído em: 30/06/2025</small>
-                                    </div>
+                                <p class="mb-1 text-muted small"><strong>Critério:</strong> Art. 13 do Decreto nº 7.508/2011: é dever garantir transparência e acesso às informações.</p>
+                                <div class="bg-white p-2 border rounded mt-2">
+                                    <p class="mb-1"><strong>Achado Típico (Risco):</strong> Ausência de sistemas organizados ou responsáveis formalmente designados.</p>
+                                    <p class="mb-0"><strong>Procedimento de Auditoria:</strong> Verificação documental de sistemas de informação e entrevistas com responsáveis.</p>
                                 </div>
                             </div>
+
+                            <div class="audit-finding">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h6 class="text-primary mb-0">2. Previsão Contratual de Canais</h6>
+                                    <span class="audit-code">EV1.CA</span>
+                                </div>
+                                <p class="mb-1 text-muted small"><strong>Critério:</strong> Art. 6º, XII, XIII, Anexo XXIV da Portaria 2/2017 - Diretriz da Pnhosp sobre transparência.</p>
+                                <div class="bg-white p-2 border rounded mt-2">
+                                    <p class="mb-1"><strong>Achado Típico (Risco):</strong> Cláusula contratual não prevê canais específicos ou mecanismos para denúncia.</p>
+                                    <p class="mb-0"><strong>Procedimento de Auditoria:</strong> Análise do contrato quanto à previsão de canais formais.</p>
+                                </div>
+                            </div>
+
+                            <div class="audit-finding">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h6 class="text-primary mb-0">3. Efetividade do Controle Social</h6>
+                                    <span class="audit-code">EV1.EF</span>
+                                </div>
+                                <p class="mb-1 text-muted small"><strong>Critério:</strong> Art. 35, V, Anexo XXIV Portaria 2/2017 - Contratualização deve garantir efetivação do controle social.</p>
+                                <div class="bg-white p-2 border rounded mt-2">
+                                    <p class="mb-1"><strong>Achado Típico (Risco):</strong> Ausência de registros de manifestações ou canais desconhecidos pela população.</p>
+                                    <p class="mb-0"><strong>Procedimento de Auditoria:</strong> Avaliação da efetividade com base em registros de uso e resultados.</p>
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
 
                 <!-- Indicadores Section -->
                 <div class="dashboard-section" id="indicadores">
-                    <h2>Indicadores de Desempenho (Jan-Abr 2025)</h2>
-                    <p class="text-muted">Acompanhamento dos principais KPIs conforme Contrato 20230226 e Aditivos (Base: Memo 1486/2025)</p>
+                    <h2>Indicadores de Desempenho</h2>
+                    <p class="text-muted">Dados Consolidados (Relatórios 2025 + CSV SIH/SUS)</p>
                     
                     <ul class="nav nav-tabs" id="indicadoresTabs" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="operacionais-tab" data-bs-toggle="tab" data-bs-target="#operacionais" type="button">Operacionais</button>
+                            <button class="nav-link active" id="producao-tab-btn" data-bs-toggle="tab" data-bs-target="#producao-tab-content" type="button">Produção SUS</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="qualidade-tab-btn" data-bs-toggle="tab" data-bs-target="#qualidade-tab-content" type="button">Qualidade</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="producao-tab-btn" data-bs-toggle="tab" data-bs-target="#producao-tab-content" type="button">Produção SUS</button>
+                            <button class="nav-link" id="operacionais-tab" data-bs-toggle="tab" data-bs-target="#operacionais" type="button">Contratuais</button>
                         </li>
                     </ul>
                     
                     <div class="tab-content p-3 border border-top-0 rounded-bottom" id="indicadoresTabsContent">
-                        <div class="tab-pane fade show active" id="operacionais" role="tabpanel">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Taxa de Ocupação de Leitos</h5>
-                                            <canvas id="ocupacaoChart" height="150"></canvas>
-                                            <div class="legend">
-                                                <div class="legend-item">
-                                                    <div class="legend-color" style="background-color: #3498db;"></div>
-                                                    <span>Realizado</span>
-                                                </div>
-                                                <div class="legend-item">
-                                                    <div class="legend-color" style="background-color: #e74c3c;"></div>
-                                                    <span>Meta (85%)</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Atendimento Ambulatorial</h5>
-                                            <canvas id="ambulatorioChart" height="150"></canvas>
-                                            <div class="legend">
-                                                <div class="legend-item">
-                                                    <div class="legend-color" style="background-color: #3498db;"></div>
-                                                    <span>Realizado</span>
-                                                </div>
-                                                <div class="legend-item">
-                                                    <div class="legend-color" style="background-color: #e74c3c;"></div>
-                                                    <span>Meta (85%)</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="row mt-4">
-                                <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h5 class="mb-0">Indicadores Operacionais Detalhados (Média Jan-Abr 2025)</h5>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table table-striped">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Indicador</th>
-                                                            <th>Realizado (Média)</th>
-                                                            <th>Meta</th>
-                                                            <th>Status</th>
-                                                            <th>Variação</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Taxa de ocupação de leitos</td>
-                                                            <td>74%</td>
-                                                            <td>85%</td>
-                                                            <td><span class="badge bg-warning">Atenção</span></td>
-                                                            <td>-11%</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Atendimento Ambulatorial</td>
-                                                            <td>59%</td>
-                                                            <td>85%</td>
-                                                            <td><span class="badge bg-danger">Crítico</span></td>
-                                                            <td>-26%</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Cirurgias</td>
-                                                            <td>104%</td>
-                                                            <td>85%</td>
-                                                            <td><span class="badge bg-success">Bom</span></td>
-                                                            <td>+19%</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Urgência / Emergência</td>
-                                                            <td>154%</td>
-                                                            <td>85%</td>
-                                                            <td><span class="badge bg-info">Sobrecarregado</span></td>
-                                                            <td>+69%</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Hemodiálise</td>
-                                                            <td>56%</td>
-                                                            <td>85%</td>
-                                                            <td><span class="badge bg-danger">Crítico</span></td>
-                                                            <td>-29%</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>SADT Externo</td>
-                                                            <td>94%</td>
-                                                            <td>85%</td>
-                                                            <td><span class="badge bg-success">Bom</span></td>
-                                                            <td>+9%</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         
-                        <div class="tab-pane fade" id="qualidade-tab-content" role="tabpanel">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Taxa de Infecção Hospitalar</h5>
-                                            <canvas id="infeccaoChart" height="150"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Taxa de Mortalidade</h5>
-                                            <canvas id="mortalidadeChart" height="150"></canvas>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="row mt-4">
-                                <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h5 class="mb-0">Indicadores de Qualidade Detalhados (Média Jan-Abr 2025)</h5>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table table-striped">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Indicador</th>
-                                                            <th>Realizado (Média)</th>
-                                                            <th>Meta</th>
-                                                            <th>Status</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Taxa de infecção hospitalar</td>
-                                                            <td>0.8%</td>
-                                                            <td>< 5%</td>
-                                                            <td><span class="badge bg-success">Bom</span></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Taxa de mortalidade</td>
-                                                            <td>2.9%</td>
-                                                            <td>< 3.5%</td>
-                                                            <td><span class="badge bg-success">Bom</span></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Pesquisa de Satisfação do Usuário</td>
-                                                            <td>85%</td>
-                                                            <td>≥ 85%</td>
-                                                            <td><span class="badge bg-success">Bom</span></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="tab-pane fade" id="producao-tab-content" role="tabpanel">
+                        <!-- Tab Produção SUS (NOVO - Dados CSV) -->
+                        <div class="tab-pane fade show active" id="producao-tab-content" role="tabpanel">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h5 class="card-title">Produção Aprovada SIH/SUS (2024 vs 2025*)</h5>
-                                            <p class="text-muted small">*Dados de 2025 parciais (Jan-Set)</p>
-                                            <canvas id="producaoSusChart" height="120"></canvas>
+                                            <h5 class="card-title">Evolução da Produção Aprovada (SIH/SUS)</h5>
+                                            <p class="text-muted small">Comparativo entre 2024 (Total) e 2025 (Jan-Set)</p>
+                                            <canvas id="producaoSusChart" height="100"></canvas>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
-                            <div class="row mt-4">
-                                <div class="col-12">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h5 class="mb-0">Detalhamento AIH - Por Grupo de Procedimento</h5>
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <div class="metric-card">
+                                        <h6>Procedimentos Clínicos</h6>
+                                        <div class="d-flex justify-content-between align-items-end">
+                                            <h3 class="text-primary mb-0">155.172</h3>
+                                            <span class="badge bg-success">+60% vs 2024</span>
                                         </div>
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table table-striped table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Grupo de Procedimento</th>
-                                                            <th class="text-end">2024</th>
-                                                            <th class="text-end">2025 (Parcial)</th>
-                                                            <th class="text-end">Total</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>02 Procedimentos com finalidade diagnóstica</td>
-                                                            <td class="text-end">36.527</td>
-                                                            <td class="text-end">55.058</td>
-                                                            <td class="text-end">91.585</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>03 Procedimentos clínicos</td>
-                                                            <td class="text-end">59.469</td>
-                                                            <td class="text-end">95.703</td>
-                                                            <td class="text-end">155.172</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>04 Procedimentos cirúrgicos</td>
-                                                            <td class="text-end">5.606</td>
-                                                            <td class="text-end">5.671</td>
-                                                            <td class="text-end">11.277</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>06 Medicamentos</td>
-                                                            <td class="text-end">162</td>
-                                                            <td class="text-end">115</td>
-                                                            <td class="text-end">277</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>07 Órteses, próteses e materiais especiais</td>
-                                                            <td class="text-end">1.971</td>
-                                                            <td class="text-end">1.643</td>
-                                                            <td class="text-end">3.614</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>08 Ações complementares da atenção à saúde</td>
-                                                            <td class="text-end">35.622</td>
-                                                            <td class="text-end">44.499</td>
-                                                            <td class="text-end">80.121</td>
-                                                        </tr>
-                                                    </tbody>
-                                                    <tfoot class="table-light fw-bold">
-                                                        <tr>
-                                                            <td>TOTAL</td>
-                                                            <td class="text-end">139.357</td>
-                                                            <td class="text-end">202.689</td>
-                                                            <td class="text-end">342.046</td>
-                                                        </tr>
-                                                    </tfoot>
-                                                </table>
-                                            </div>
-                                            <p class="text-muted small mt-2"><i class="fas fa-info-circle me-1"></i> Fonte: Ministério da Saúde - Sistema de Informações Hospitalares do SUS (SIH/SUS). Período: Jan/2024 - Set/2025.</p>
+                                        <small class="text-muted">Total acumulado (2024-2025)</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="metric-card">
+                                        <h6>Procedimentos Cirúrgicos</h6>
+                                        <div class="d-flex justify-content-between align-items-end">
+                                            <h3 class="text-primary mb-0">11.277</h3>
+                                            <span class="badge bg-success">+1.1% vs 2024</span>
                                         </div>
+                                        <small class="text-muted">Total acumulado (2024-2025)</small>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <!-- Conformidade Section -->
-                <div class="dashboard-section" id="conformidade">
-                    <h2>Conformidade com a Legislação</h2>
-                    <p class="text-muted">Verificação do cumprimento dos requisitos legais e contratuais (Base: Contrato 20230226)</p>
-                    
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5 class="mb-0">Documentação Obrigatória</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <span>Instrumento Formal de Contratualização</span>
-                                            <span class="badge bg-success">Conforme</span>
-                                        </div>
-                                        <div class="progress mb-3">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 100%"></div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <span>Documento Descritivo (Anexo I)</span>
-                                            <span class="badge bg-success">Conforme</span>
-                                        </div>
-                                        <div class="progress mb-3">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 100%"></div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <span>Comissão de Acompanhamento (CAF)</span>
-                                            <span class="badge bg-success">Ativa</span>
-                                        </div>
-                                        <div class="progress mb-3">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 100%"></div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <span>Núcleo de Segurança do Paciente (NSP)</span>
-                                            <span class="badge bg-success">Conforme</span>
-                                        </div>
-                                        <div class="progress mb-3">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 100%"></div>
+                        <!-- Tab Operacionais (Existente) -->
+                        <div class="tab-pane fade" id="operacionais" role="tabpanel">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Taxa de Ocupação</h5>
+                                            <canvas id="ocupacaoChart" height="150"></canvas>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5 class="mb-0">Sistemas de Informação (Cláusula 2ª)</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <span>SCNES - Cadastro Nacional</span>
-                                            <span class="badge bg-success">Atualizado</span>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Aderência Ambulatorial</h5>
+                                            <canvas id="ambulatorioChart" height="150"></canvas>
                                         </div>
-                                        <div class="progress mb-3">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 100%"></div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <span>SIH/SUS - Hospitalar</span>
-                                            <span class="badge bg-success">Atualizado</span>
-                                        </div>
-                                        <div class="progress mb-3">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 100%"></div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <span>SIA/SUS - Ambulatorial</span>
-                                            <span class="badge bg-success">Atualizado</span>
-                                        </div>
-                                        <div class="progress mb-3">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 100%"></div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <span>SINAN - Notificação</span>
-                                            <span class="badge bg-success">Atualizado</span>
-                                        </div>
-                                        <div class="progress mb-3">
-                                            <div class="progress-bar bg-success" role="progressbar" style="width: 100%"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5 class="mb-0">Checklist de Conformidade Contratual</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Item</th>
-                                                    <th>Requisito Legal/Contratual</th>
-                                                    <th>Status</th>
-                                                    <th>Evidência</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Contrato de Gestão</td>
-                                                    <td>Lei 4.635/2015 (Municipal)</td>
-                                                    <td><span class="badge bg-success">Conforme</span></td>
-                                                    <td>Contrato nº 20230226</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Plano de Segurança do Paciente</td>
-                                                    <td>RDC 36/2013 / Cláusula 2ª, item 22</td>
-                                                    <td><span class="badge bg-success">Conforme</span></td>
-                                                    <td>NSP Ativo (Memo 1486/2025)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Pesquisa de Satisfação (SAU)</td>
-                                                    <td>Cláusula 2ª, item 21 e 45</td>
-                                                    <td><span class="badge bg-success">Conforme</span></td>
-                                                    <td>85% (Média Jan-Abr 2025)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Comissão de Controle de Infecção (CCIH)</td>
-                                                    <td>Cláusula 2ª, item 22</td>
-                                                    <td><span class="badge bg-success">Conforme</span></td>
-                                                    <td>Taxa de 0.8% (Média Jan-Abr 2025)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Relatórios de Prestação de Contas</td>
-                                                    <td>Cláusula 5ª</td>
-                                                    <td><span class="badge bg-success">Conforme</span></td>
-                                                    <td>Relatórios mensais entregues</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -866,492 +703,168 @@
 
                 <!-- Financeiro Section -->
                 <div class="dashboard-section" id="financeiro">
-                    <h2>Informações Financeiras</h2>
-                    <p class="text-muted">Valores e estrutura de pagamento conforme 4º Termo Aditivo (Junho 2025).</p>
-                    
+                    <h2>Informações Financeiras (4º Termo Aditivo)</h2>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5 class="mb-0">Valor Mensal do Contrato (Pós 4º TA)</h5>
+                                    <h5 class="mb-0">Repasse Mensal Atualizado</h5>
                                 </div>
                                 <div class="card-body text-center">
-                                    <div class="kpi-value text-primary">R$ 14.281.344,00</div>
-                                    <p class="text-muted">(Quatorze milhões, duzentos e oitenta e um mil, trezentos e quarenta e quatro reais)</p>
-                                    <hr>
-                                    <small class="text-danger">Redução de 3.4% (R$ 502.656,00) em relação ao contrato original.</small>
+                                    <h1 class="text-primary display-4">R$ 14,28 Mi</h1>
+                                    <p class="text-muted">Valor global mensal vigente</p>
+                                    <div class="alert alert-info py-2">
+                                        <small><i class="fas fa-info-circle me-1"></i> Redução de R$ 502.656,00 (-3,4%) em relação ao original.</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="card">
                                 <div class="card-header">
-                                    <h5 class="mb-0">Estrutura de Pagamento</h5>
+                                    <h5 class="mb-0">Distribuição do Custeio</h5>
                                 </div>
                                 <div class="card-body">
-                                    <canvas id="financeiroChart" height="220"></canvas>
-                                    <div class_ ="legend mt-3">
-                                        <div class="legend-item">
-                                            <div class="legend-color" style="background-color: #2c3e50;"></div>
-                                            <span>Fixo (70%)</span>
-                                        </div>
-                                        <div class="legend-item">
-                                            <div class="legend-color" style="background-color: #3498db;"></div>
-                                            <span>Variável (28%)</span>
-                                        </div>
-                                        <div class="legend-item">
-                                            <div class="legend-color" style="background-color: #27ae60;"></div>
-                                            <span>Invest. (2%)</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                     <div class="row mt-4">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5 class="mb-0">Detalhamento dos Repasses (Pós 4º TA)</h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>Componente</th>
-                                                    <th>Percentual</th>
-                                                    <th>Valor Mensal</th>
-                                                    <th>Condição</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Parcela Fixa</td>
-                                                    <td>70%</td>
-                                                    <td>R$ 9.996.940,80</td>
-                                                    <td>Repasse regular para custeio</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Parcela Variável</td>
-                                                    <td>28%</td>
-                                                    <td>R$ 3.998.776,32</td>
-                                                    <td>Condicionada ao cumprimento de metas (Anexo II)</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Parcela Investimento</td>
-                                                    <td>2%</td>
-                                                    <td>R$ 285.626,88</td>
-                                                    <td>Repasse fixo para investimentos/melhorias</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>Total Mensal</strong></td>
-                                                    <td><strong>100%</strong></td>
-                                                    <td><strong>R$ 14.281.344,00</strong></td>
-                                                    <td></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    <canvas id="financeiroChart" height="200"></canvas>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Novos Serviços Section -->
+
+                <!-- Conformidade & Serviços (Placeholders mantidos) -->
                 <div class="dashboard-section" id="servicos">
-                    <h2>Novos Serviços (Plano de Implantação 2025)</h2>
-                    <p class="text-muted">Cronograma de expansão conforme Ofício 225/2025 (Anexo III).</p>
-                    
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="action-item">
-                                <div class="d-flex justify-content-between">
-                                    <h6>Expansão UTI Adulto (10 novos leitos)</h6>
-                                    <span class="badge bg-info">Jun-Jul 2025</span>
-                                </div>
-                                <p class="mb-1">Ampliação da capacidade de resposta a pacientes críticos.</p>
-                            </div>
-                            <div class="action-item">
-                                <div class="d-flex justify-content-between">
-                                    <h6>Reestruturação Serviços Cirúrgicos</h6>
-                                    <span class="badge bg-info">Jul-Ago 2025</span>
-                                </div>
-                                <p class="mb-1">Reorganização de fluxos e ampliação de especialidades (ex: Neurocirurgia).</p>
-                            </div>
-                            <div class="action-item">
-                                <div class="d-flex justify-content-between">
-                                    <h6>UTI Pediátrica Mista (10 leitos)</h6>
-                                    <span class="badge bg-info">Ago-Set 2025</span>
-                                </div>
-                                <p class="mb-1">Criação de 05 leitos UTI Neonatal e 05 leitos UTI Pediátrica.</p>
-                            </div>
-                            <div class="action-item">
-                                <div class="d-flex justify-content-between">
-                                    <h6>Serviço de Hemodinâmica</h6>
-                                    <span class="badge bg-info">Out 2025</span>
-                                </div>
-                                <p class="mb-1">Implantação de exames como cateterismo e angioplastia.</p>
-                            </div>
-                        </div>
-                    </div>
+                     <h2>Novos Serviços</h2>
+                     <p>Consulte a aba "Planilha de Coleta" para atualizar o status.</p>
                 </div>
-                
-                <!-- Relatório Section -->
-                <div class="dashboard-section" id="relatorio">
-                    <h2>Relatório de Avaliação</h2>
-                    <p class="text-muted">Geração de relatórios consolidados para auditoria</p>
-                    <div class="card">
-                        <div class="card-body">
-                            <h5>Gerar Relatório</h5>
-                            <p>Selecione os parâmetros para gerar o relatório consolidado.</p>
-                            <div class="mb-3">
-                                <label for="reportType" class="form-label">Tipo de Relatório</label>
-                                <select class="form-select" id="reportType">
-                                    <option>Relatório de Desempenho (KPIs)</option>
-                                    <option>Relatório Financeiro</option>
-                                    <option>Relatório de Conformidade</option>
-                                    <option>Relatório Completo</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="reportPeriod" class="form-label">Período</label>
-                                <select class="form-select" id="reportPeriod">
-                                    <option>Último Mês</option>
-                                    <option>Último Trimestre (Jan-Abr 2025)</option>
-                                    <option>Último Ano (2024)</option>
-                                </select>
-                            </div>
-                            <button class="btn btn-primary">
-                                <i class="fas fa-file-pdf me-1"></i> Gerar PDF
-                            </button>
-                        </div>
-                    </div>
+                <div class="dashboard-section" id="conformidade">
+                    <h2>Conformidade</h2>
+                    <p>Consulte a aba "Dashboard" para checklist.</p>
                 </div>
+
             </div>
         </div>
     </div>
 
-    <footer class="mt-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h5><i class="fas fa-hospital-alt me-2"></i> Dashboard de Gestão - SEMSA</h5>
-                    <p>Sistema de avaliação de gestão hospitalar (OSS) do Hospital Geral de Parauapebas (HGP), Contrato nº 20230226.</p>
-                </div>
-                <div class="col-md-3">
-                    <h5>Links Úteis</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-light">Portal da Transparência</a></li>
-                        <li><a href="#" class="text-light">Legislação SEMSA</a></li>
-                        <li><a href="#" class="text-light">Manuais</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3">
-                    <h5>Contato</h5>
-                    <ul class="list-unstyled">
-                        <li><i class="fas fa-envelope me-2"></i> contato.semsa@parauapebas.pa.gov.br</li>
-                        <li><i class="fas fa-map-marker-alt me-2"></i> Rua A, S/N, Cidade Nova, Parauapebas - PA</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="text-center mt-3 pt-3 border-top">
-                <p>&copy; 2025 Prefeitura Municipal de Parauapebas. Todos os direitos reservados.</p>
-            </div>
-        </div>
-    </footer>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Navegação entre seções
+        // Navegação
         document.querySelectorAll('.sidebar .nav-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
-                
-                // Remove a classe active de todos os links
-                document.querySelectorAll('.sidebar .nav-link').forEach(item => {
-                    item.classList.remove('active');
-                });
-                
-                // Adiciona a classe active ao link clicado
+                document.querySelectorAll('.sidebar .nav-link').forEach(i => i.classList.remove('active'));
                 this.classList.add('active');
-                
-                // Oculta todas as seções
-                document.querySelectorAll('.dashboard-section').forEach(section => {
-                    section.classList.remove('active');
-                });
-                
-                // Mostra a seção correspondente
+                document.querySelectorAll('.dashboard-section').forEach(s => s.classList.remove('active'));
                 const sectionId = this.getAttribute('data-section');
                 document.getElementById(sectionId).classList.add('active');
             });
         });
 
-        // Gráfico de Radar - Desempenho por Eixo (Dados Jan-Abr 2025)
-        const radarCtx = document.getElementById('radarChart').getContext('2d');
-        const radarChart = new Chart(radarCtx, {
+        // Chart: Dashboard Mix (Radar)
+        new Chart(document.getElementById('dashboardMixChart'), {
             type: 'radar',
             data: {
-                labels: ['SADT', 'Ambulatório', 'Cirurgias', 'Urgência', 'Ocupação', 'Satisfação'],
+                labels: ['Produção SIH', 'Cirurgias', 'Ambulatório', 'Urgência', 'Qualidade'],
                 datasets: [{
-                    label: 'Desempenho (Jan-Abr 2025)',
-                    // Dados (média Jan-Abr 2025): [94, 59, 104(cap 100), 154(cap 100), 74, 85]
-                    data: [94, 59, 100, 100, 74, 85],
+                    label: 'Performance (%)',
+                    data: [100, 104, 59, 154, 95], // Dados mistos aproximados
                     backgroundColor: 'rgba(52, 152, 219, 0.2)',
-                    borderColor: 'rgba(52, 152, 219, 1)',
-                    pointBackgroundColor: 'rgba(52, 152, 219, 1)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgba(52, 152, 219, 1)'
-                }, {
-                    label: 'Meta',
-                    data: [85, 85, 85, 85, 85, 85],
-                    backgroundColor: 'rgba(46, 204, 113, 0.2)',
-                    borderColor: 'rgba(46, 204, 113, 1)',
-                    pointBackgroundColor: 'rgba(46, 204, 113, 1)',
-                    pointBorderColor: '#fff',
-                    pointHoverBackgroundColor: '#fff',
-                    pointHoverBorderColor: 'rgba(46, 204, 113, 1)'
+                    borderColor: '#3498db',
+                    pointBackgroundColor: '#3498db'
                 }]
             },
             options: {
-                scales: {
-                    r: {
-                        angleLines: {
-                            display: true
-                        },
-                        suggestedMin: 40,
-                        suggestedMax: 100
-                    }
-                }
+                scales: { r: { suggestedMin: 40, suggestedMax: 160 } }
             }
         });
 
-        // Gráfico de Ocupação de Leitos (Dados Jan-Abr 2025)
-        const ocupacaoCtx = document.getElementById('ocupacaoChart').getContext('2d');
-        const ocupacaoChart = new Chart(ocupacaoCtx, {
-            type: 'line',
-            data: {
-                labels: ['Jan/25', 'Fev/25', 'Mar/25', 'Abr/25'],
-                datasets: [{
-                    label: 'Realizado',
-                    data: [74, 76, 80, 66.7],
-                    borderColor: 'rgba(52, 152, 219, 1)',
-                    backgroundColor: 'rgba(52, 152, 219, 0.1)',
-                    tension: 0.3
-                }, {
-                    label: 'Meta (85%)',
-                    data: [85, 85, 85, 85],
-                    borderColor: 'rgba(231, 76, 60, 1)',
-                    backgroundColor: 'rgba(231, 76, 60, 0.1)',
-                    borderDash: [5, 5],
-                    tension: 0.3
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: false,
-                        min: 60,
-                        max: 90
-                    }
-                }
-            }
-        });
-
-        // Gráfico de Atendimento Ambulatorial (Dados Jan-Abr 2025)
-        const ambulatorioCtx = document.getElementById('ambulatorioChart').getContext('2d');
-        const ambulatorioChart = new Chart(ambulatorioCtx, {
-            type: 'line',
-            data: {
-                labels: ['Jan/25', 'Fev/25', 'Mar/25', 'Abr/25'],
-                datasets: [{
-                    label: 'Realizado',
-                    data: [54, 55, 59, 66],
-                    borderColor: 'rgba(52, 152, 219, 1)',
-                    backgroundColor: 'rgba(52, 152, 219, 0.1)',
-                    tension: 0.3
-                }, {
-                    label: 'Meta (85%)',
-                    data: [85, 85, 85, 85],
-                    borderColor: 'rgba(231, 76, 60, 1)',
-                    backgroundColor: 'rgba(231, 76, 60, 0.1)',
-                    borderDash: [5, 5],
-                    tension: 0.3
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: false,
-                        min: 50,
-                        max: 90
-                    }
-                }
-            }
-        });
-
-        // Gráfico de Infecção Hospitalar (Dados Jan-Abr 2025)
-        const infeccaoCtx = document.getElementById('infeccaoChart').getContext('2d');
-        const infeccaoChart = new Chart(infeccaoCtx, {
+        // Chart: Produção SUS (Bar - Dados CSV)
+        new Chart(document.getElementById('producaoSusChart'), {
             type: 'bar',
             data: {
-                labels: ['Jan/25', 'Fev/25', 'Mar/25', 'Abr/25'],
-                datasets: [{
-                    label: 'Taxa de Infecção (%)',
-                    data: [1.53, 0.5, 0.67, 0.66],
-                    backgroundColor: 'rgba(39, 174, 96, 0.7)',
-                    borderColor: 'rgba(39, 174, 96, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 5, // Meta é < 5%
-                        ticks: {
-                            callback: function(value) { return value + '%' }
-                        }
-                    }
-                }
-            }
-        });
-
-        // Gráfico de Mortalidade (Dados Jan-Abr 2025)
-        const mortalidadeCtx = document.getElementById('mortalidadeChart').getContext('2d');
-        const mortalidadeChart = new Chart(mortalidadeCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Jan/25', 'Fev/25', 'Mar/25', 'Abr/25'],
-                datasets: [{
-                    label: 'Taxa de Mortalidade (%)',
-                    data: [2.84, 2.84, 2.77, 3.31],
-                    backgroundColor: 'rgba(39, 174, 96, 0.7)',
-                    borderColor: 'rgba(39, 174, 96, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 4, // Meta é < 3.5%
-                        ticks: {
-                            callback: function(value) { return value + '%' }
-                        }
-                    }
-                }
-            }
-        });
-        
-        // Gráfico Produção SUS (SIH)
-        const producaoSusCtx = document.getElementById('producaoSusChart').getContext('2d');
-        const producaoSusChart = new Chart(producaoSusCtx, {
-            type: 'bar',
-            data: {
-                labels: [
-                    'Diagnóstica', 
-                    'Clínicos', 
-                    'Cirúrgicos', 
-                    'Medicamentos', 
-                    'OPME', 
-                    'Ações Complementares'
-                ],
+                labels: ['Diagnóstica', 'Clínicos', 'Cirúrgicos', 'Medicamentos', 'OPME', 'Ações Compl.'],
                 datasets: [
                     {
-                        label: '2024',
+                        label: '2024 (Total)',
                         data: [36527, 59469, 5606, 162, 1971, 35622],
-                        backgroundColor: 'rgba(44, 62, 80, 0.7)', // --primary
-                        borderColor: 'rgba(44, 62, 80, 1)',
-                        borderWidth: 1
+                        backgroundColor: '#95a5a6'
                     },
                     {
-                        label: '2025 (Parcial)',
+                        label: '2025 (Jan-Set)',
                         data: [55058, 95703, 5671, 115, 1643, 44499],
-                        backgroundColor: 'rgba(52, 152, 219, 0.7)', // --secondary
-                        borderColor: 'rgba(52, 152, 219, 1)',
-                        borderWidth: 1
+                        backgroundColor: '#3498db'
                     }
                 ]
             },
             options: {
                 responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    tooltip: {
-                        mode: 'index',
-                        intersect: false,
-                    }
-                },
+                maintainAspectRatio: false,
                 scales: {
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Quantidade Aprovada'
-                        }
-                    }
+                    y: { beginAtZero: true }
                 }
             }
         });
-        
-        // Gráfico Financeiro (Doughnut)
-        const financeiroCtx = document.getElementById('financeiroChart').getContext('2d');
-        const financeiroChart = new Chart(financeiroCtx, {
+
+        // Chart: Financeiro (Doughnut)
+        new Chart(document.getElementById('financeiroChart'), {
             type: 'doughnut',
             data: {
                 labels: ['Fixo (70%)', 'Variável (28%)', 'Investimento (2%)'],
                 datasets: [{
                     data: [70, 28, 2],
-                    backgroundColor: [
-                        '#2c3e50', // primary
-                        '#3498db', // secondary
-                        '#27ae60'  // success
-                    ],
-                    hoverOffset: 4
+                    backgroundColor: ['#2c3e50', '#3498db', '#27ae60']
                 }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: false // Usando a legenda HTML customizada
-                    }
-                }
             }
         });
 
-        // Simulação de logout
-        document.getElementById('logout-btn').addEventListener('click', function(e) {
+        // Chart: Ocupação (Line - Jan-Abr)
+        new Chart(document.getElementById('ocupacaoChart'), {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Fev', 'Mar', 'Abr'],
+                datasets: [{
+                    label: 'Realizado (%)',
+                    data: [74, 76, 80, 66.7],
+                    borderColor: '#f39c12',
+                    backgroundColor: 'rgba(243, 156, 18, 0.1)',
+                    tension: 0.1
+                }, {
+                    label: 'Meta (85%)',
+                    data: [85, 85, 85, 85],
+                    borderColor: '#27ae60',
+                    borderDash: [5, 5],
+                    tension: 0.1
+                }]
+            },
+            options: { scales: { y: { min: 50, max: 100 } } }
+        });
+
+        // Chart: Ambulatório (Line - Jan-Abr)
+        new Chart(document.getElementById('ambulatorioChart'), {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Fev', 'Mar', 'Abr'],
+                datasets: [{
+                    label: 'Realizado (%)',
+                    data: [54, 55, 59, 66],
+                    borderColor: '#e74c3c',
+                    backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                    tension: 0.1
+                }, {
+                    label: 'Meta (85%)',
+                    data: [85, 85, 85, 85],
+                    borderColor: '#27ae60',
+                    borderDash: [5, 5],
+                    tension: 0.1
+                }]
+            },
+            options: { scales: { y: { min: 40, max: 100 } } }
+        });
+
+        // Logout
+        document.getElementById('logout-btn').addEventListener('click', e => {
             e.preventDefault();
-            // Substituindo alert() por um modal simples (simulação)
-            const modalHTML = `
-                <div class="modal fade" id="logoutModal" tabindex="-1">
-                  <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title">Logout</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                      </div>
-                      <div class="modal-body">
-                        <p>Saindo do sistema...</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>`;
-            document.body.insertAdjacentHTML('beforeend', modalHTML);
-            var myModal = new bootstrap.Modal(document.getElementById('logoutModal'));
-            myModal.show();
-            
-            // Simula o fechamento e remoção do modal
-            setTimeout(() => {
-                myModal.hide();
-                document.getElementById('logoutModal').remove();
-            }, 1500);
+            alert('Simulação de Logout realizada.');
         });
     </script>
 </body>
