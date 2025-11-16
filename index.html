@@ -270,6 +270,11 @@
             font-size: 1.2rem;
             font-weight: 700;
         }
+        
+        .compact-chart-container {
+            height: 180px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -743,15 +748,17 @@
                     
                     <div class="tab-content p-3 border border-top-0 rounded-bottom" id="indicadoresTabsContent">
                         
-                        <!-- Tab Produção SUS (NOVO - Dados CSV) -->
+                        <!-- Tab Produção SUS (NOVO - Gráfico Compacto) -->
                         <div class="tab-pane fade show active" id="producao-tab-content" role="tabpanel">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="card">
                                         <div class="card-body">
                                             <h5 class="card-title">Evolução da Produção Aprovada (SIH/SUS)</h5>
-                                            <p class="text-muted small">Comparativo entre 2024 (Total) e 2025 (Jan-Set)</p>
-                                            <canvas id="producaoSusChart" height="100"></canvas>
+                                            <p class="text-muted small mb-3">Variação Percentual 2025 vs 2024</p>
+                                            <div class="compact-chart-container">
+                                                <canvas id="producaoSusChart"></canvas>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -759,22 +766,22 @@
                             <div class="row mt-3">
                                 <div class="col-md-6">
                                     <div class="metric-card">
-                                        <h6>Procedimentos Clínicos</h6>
+                                        <h6>Procedimentos Clínicos & Diagnósticos</h6>
                                         <div class="d-flex justify-content-between align-items-end">
-                                            <h3 class="text-primary mb-0">155.172</h3>
-                                            <span class="badge bg-success">+60% vs 2024</span>
+                                            <h3 class="text-primary mb-0">+57%</h3>
+                                            <span class="badge bg-success">Crescimento</span>
                                         </div>
-                                        <small class="text-muted">Total acumulado (2024-2025)</small>
+                                        <small class="text-muted">2025 vs 2024</small>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="metric-card">
                                         <h6>Procedimentos Cirúrgicos</h6>
                                         <div class="d-flex justify-content-between align-items-end">
-                                            <h3 class="text-primary mb-0">11.277</h3>
-                                            <span class="badge bg-success">+1.1% vs 2024</span>
+                                            <h3 class="text-primary mb-0">+1.2%</h3>
+                                            <span class="badge bg-success">Crescimento</span>
                                         </div>
-                                        <small class="text-muted">Total acumulado (2024-2025)</small>
+                                        <small class="text-muted">2025 vs 2024</small>
                                     </div>
                                 </div>
                             </div>
@@ -899,23 +906,27 @@
             }
         });
 
-        // Chart: Produção SUS (Bar - Dados CSV)
+        // Chart: Produção SUS (Bar - Gráfico Compacto)
         new Chart(document.getElementById('producaoSusChart'), {
             type: 'bar',
             data: {
-                labels: ['Diagnóstica', 'Clínicos', 'Cirúrgicos', 'Medicamentos', 'OPME', 'Ações Compl.'],
+                labels: ['Clínicos & Diagnósticos', 'Cirúrgicos', 'Outros Serviços'],
                 datasets: [
                     {
-                        label: '2024 (Total)',
-                        data: [36527, 59469, 5606, 162, 1971, 35622],
-                        backgroundColor: '#95a5a6',
-                        maxBarThickness: 30 // Barras mais finas
-                    },
-                    {
-                        label: '2025 (Jan-Set)',
-                        data: [55058, 95703, 5671, 115, 1643, 44499],
-                        backgroundColor: '#3498db',
-                        maxBarThickness: 30 // Barras mais finas
+                        label: 'Variação % 2025 vs 2024',
+                        data: [57.1, 1.2, 22.5], // Percentuais calculados
+                        backgroundColor: [
+                            'rgba(52, 152, 219, 0.7)', // Azul para positivo
+                            'rgba(52, 152, 219, 0.7)', // Azul para positivo
+                            'rgba(52, 152, 219, 0.7)'  // Azul para positivo
+                        ],
+                        borderColor: [
+                            '#3498db',
+                            '#3498db', 
+                            '#3498db'
+                        ],
+                        borderWidth: 1,
+                        maxBarThickness: 25 // Barras mais finas
                     }
                 ]
             },
@@ -925,8 +936,32 @@
                 scales: {
                     y: { 
                         beginAtZero: true,
-                        grid: { display: false }, // Menos poluição visual
-                        ticks: { font: { size: 10 } } // Fonte menor no eixo
+                        max: 70, // Para acomodar o maior percentual (57.1%)
+                        grid: { display: false },
+                        ticks: { 
+                            font: { size: 9 }, // Fonte menor
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: {
+                            font: { size: 9 } // Fonte menor para os labels
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y.toFixed(1) + '%';
+                            }
+                        }
                     }
                 }
             }
