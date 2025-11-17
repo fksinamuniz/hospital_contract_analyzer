@@ -275,21 +275,62 @@
             height: 180px;
             margin-top: 10px;
         }
+
+        /* Responsividade: ajustes para telas pequenas */
+        @media (max-width: 991.98px) {
+            .sidebar {
+                position: relative;
+                top: auto;
+                margin-bottom: 20px;
+            }
+            .navbar .container {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+            }
+            .hospital-info {
+                padding: 18px;
+            }
+            .kpi-value { font-size: 1.6rem; }
+            .compact-info { gap: 10px; }
+            .compact-info-item { padding: 8px 12px; }
+            .card { margin-bottom: 16px; }
+            .compact-chart-container { height: 160px; }
+        }
+
+        @media (max-width: 575.98px) {
+            .hospital-info h2 { font-size: 1.25rem; }
+            .hospital-info p { font-size: 0.95rem; }
+            .kpi-value { font-size: 1.4rem; }
+            .compact-chart-container { height: 140px; }
+            .spreadsheet-table { font-size: 0.82rem; }
+            .spreadsheet-section-title { font-size: 0.9rem; padding: 6px 8px; }
+            .sidebar .nav-link { padding: 8px 10px; font-size: 0.95rem; }
+        }
+
+        /* Ensures canvases stretch to container width */
+        .card canvas { width: 100% !important; height: auto !important; }
     </style>
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand d-flex align-items-center" href="#">
                 <i class="fas fa-hospital-alt me-2"></i>
-                Gestão HGP - Parauapebas (ASELC)
+                <span>Gestão HGP - Parauapebas (ASELC)</span>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegação">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item me-2 d-lg-none">
+                        <!-- quick nav for mobile: jump to coleta -->
+                        <a class="nav-link text-white" href="#" onclick="document.querySelector('[data-section=coleta]').click(); return false;">
+                            <i class="fas fa-edit me-1"></i> Coleta
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#" id="logout-btn">
                             <i class="fas fa-sign-out-alt me-1"></i> Sair
@@ -308,11 +349,10 @@
             
             <div class="compact-info">
                 <div class="compact-info-item">
-                    
-                <span class="badge bg-light text-dark me-2"><i class="fas fa-bed me-1"></i> 120 Leitos</span>
-                <span class="badge bg-light text-dark me-2"><i class="fas fa-procedures me-1"></i> 12 UTI</span>
-                <span class="badge bg-light text-dark me-2"><i class="fas fa-user-md me-1"></i> 45 Médicos</span>
-                <span class="badge bg-light text-dark"><i class="fas fa-calendar me-1"></i> Contrato até 20/11/2025</span>
+                    <span class="badge bg-light text-dark me-2"><i class="fas fa-bed me-1"></i> 120 Leitos</span>
+                    <span class="badge bg-light text-dark me-2"><i class="fas fa-procedures me-1"></i> 12 UTI</span>
+                    <span class="badge bg-light text-dark me-2"><i class="fas fa-user-md me-1"></i> 45 Médicos</span>
+                    <span class="badge bg-light text-dark"><i class="fas fa-calendar me-1"></i> Contrato até 20/11/2025</span>
                 </div>
             </div>
         </div>
@@ -387,7 +427,7 @@
                     
                     <!-- KPIs -->
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-6 col-md-3">
                             <div class="card kpi-card">
                                 <div class="card-body">
                                     <i class="fas fa-procedures fa-2x text-primary mb-2"></i>
@@ -397,7 +437,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-6 col-md-3">
                             <div class="card kpi-card">
                                 <div class="card-body">
                                     <i class="fas fa-user-doctor fa-2x text-primary mb-2"></i>
@@ -407,7 +447,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-6 col-md-3">
                             <div class="card kpi-card">
                                 <div class="card-body">
                                     <i class="fas fa-file-medical-alt fa-2x text-primary mb-2"></i>
@@ -417,7 +457,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-6 col-md-3">
                             <div class="card kpi-card">
                                 <div class="card-body">
                                     <i class="fas fa-coins fa-2x text-primary mb-2"></i>
@@ -430,17 +470,19 @@
                     </div>
 
                     <div class="row mt-4">
-                        <div class="col-md-8">
+                        <div class="col-lg-8 col-12">
                              <div class="card">
                                 <div class="card-header">
                                     <h5 class="mb-0">Produção SUS x Metas (2025)</h5>
                                 </div>
                                 <div class="card-body">
-                                    <canvas id="dashboardMixChart" height="250"></canvas>
+                                    <div style="height:320px;">
+                                        <canvas id="dashboardMixChart"></canvas>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-lg-4 col-12 mt-3 mt-lg-0">
                             <div class="card">
                                 <div class="card-header">
                                     <h5 class="mb-0">Aderência Auditoria TCU</h5>
@@ -630,7 +672,7 @@
                     </div>
                 </div>
 
-                <!-- NOVA SEÇÃO: Auditoria TCU -->
+                <!-- Auditoria TCU -->
                 <div class="dashboard-section" id="auditoria-tcu">
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h2>Referencial de Auditoria (TCU)</h2>
@@ -798,7 +840,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6 mt-3 mt-md-0">
                                     <div class="card">
                                         <div class="card-body">
                                             <h5 class="card-title">Aderência Ambulatorial</h5>
@@ -816,7 +858,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6 mt-3 mt-md-0">
                                     <div class="card">
                                         <div class="card-body">
                                             <h5 class="card-title">Taxa de Mortalidade</h5>
@@ -847,13 +889,15 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 mt-3 mt-md-0">
                             <div class="card">
                                 <div class="card-header">
                                     <h5 class="mb-0">Distribuição do Custeio</h5>
                                 </div>
                                 <div class="card-body">
-                                    <canvas id="financeiroChart" height="200"></canvas>
+                                    <div style="height:260px;">
+                                        <canvas id="financeiroChart"></canvas>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -884,12 +928,20 @@
                 this.classList.add('active');
                 document.querySelectorAll('.dashboard-section').forEach(s => s.classList.remove('active'));
                 const sectionId = this.getAttribute('data-section');
-                document.getElementById(sectionId).classList.add('active');
+                const target = document.getElementById(sectionId);
+                if (target) target.classList.add('active');
+                // on small screens, scroll to top of content
+                if (window.innerWidth < 768) {
+                    window.scrollTo({ top: document.querySelector('.container').offsetTop, behavior: 'smooth' });
+                }
             });
         });
 
+        // Charts collection for easy resize
+        const charts = [];
+
         // Chart: Dashboard Mix (Radar)
-        new Chart(document.getElementById('dashboardMixChart'), {
+        const dashboardMixChart = new Chart(document.getElementById('dashboardMixChart'), {
             type: 'radar',
             data: {
                 labels: ['Produção SIH', 'Cirurgias', 'Ambulatório', 'Urgência', 'Qualidade'],
@@ -902,12 +954,16 @@
                 }]
             },
             options: {
-                scales: { r: { suggestedMin: 40, suggestedMax: 160 } }
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { r: { suggestedMin: 40, suggestedMax: 160 } },
+                plugins: { legend: { display: false } }
             }
         });
+        charts.push(dashboardMixChart);
 
         // Chart: Produção SUS (Bar - Gráfico Compacto)
-        new Chart(document.getElementById('producaoSusChart'), {
+        const producaoSusChart = new Chart(document.getElementById('producaoSusChart'), {
             type: 'bar',
             data: {
                 labels: ['Clínicos & Diagnósticos', 'Cirúrgicos', 'Outros Serviços'],
@@ -916,17 +972,13 @@
                         label: 'Variação % 2025 vs 2024',
                         data: [57.1, 1.2, 22.5], // Percentuais calculados
                         backgroundColor: [
-                            'rgba(52, 152, 219, 0.7)', // Azul para positivo
-                            'rgba(52, 152, 219, 0.7)', // Azul para positivo
-                            'rgba(52, 152, 219, 0.7)'  // Azul para positivo
+                            'rgba(52, 152, 219, 0.8)',
+                            'rgba(52, 152, 219, 0.8)',
+                            'rgba(52, 152, 219, 0.8)'
                         ],
-                        borderColor: [
-                            '#3498db',
-                            '#3498db', 
-                            '#3498db'
-                        ],
+                        borderColor: ['#3498db','#3498db','#3498db'],
                         borderWidth: 1,
-                        maxBarThickness: 25 // Barras mais finas
+                        maxBarThickness: 36
                     }
                 ]
             },
@@ -936,26 +988,19 @@
                 scales: {
                     y: { 
                         beginAtZero: true,
-                        max: 70, // Para acomodar o maior percentual (57.1%)
+                        max: 70,
                         grid: { display: false },
                         ticks: { 
-                            font: { size: 9 }, // Fonte menor
-                            callback: function(value) {
-                                return value + '%';
-                            }
+                            callback: function(value) { return value + '%'; },
+                            maxTicksLimit: 5
                         }
                     },
                     x: {
                         grid: { display: false },
-                        ticks: {
-                            font: { size: 9 } // Fonte menor para os labels
-                        }
                     }
                 },
                 plugins: {
-                    legend: {
-                        display: false
-                    },
+                    legend: { display: false },
                     tooltip: {
                         callbacks: {
                             label: function(context) {
@@ -966,9 +1011,10 @@
                 }
             }
         });
+        charts.push(producaoSusChart);
 
         // Chart: Financeiro (Doughnut)
-        new Chart(document.getElementById('financeiroChart'), {
+        const financeiroChart = new Chart(document.getElementById('financeiroChart'), {
             type: 'doughnut',
             data: {
                 labels: ['Fixo (70%)', 'Variável (28%)', 'Investimento (2%)'],
@@ -976,11 +1022,17 @@
                     data: [70, 28, 2],
                     backgroundColor: ['#2c3e50', '#3498db', '#27ae60']
                 }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom' } }
             }
         });
+        charts.push(financeiroChart);
 
         // Chart: Ocupação (Line - Jan-Abr)
-        new Chart(document.getElementById('ocupacaoChart'), {
+        const ocupacaoChart = new Chart(document.getElementById('ocupacaoChart'), {
             type: 'line',
             data: {
                 labels: ['Jan', 'Fev', 'Mar', 'Abr'],
@@ -989,131 +1041,108 @@
                     data: [74, 76, 80, 66.7],
                     borderColor: '#f39c12',
                     backgroundColor: 'rgba(243, 156, 18, 0.1)',
-                    tension: 0.1
+                    tension: 0.2,
+                    fill: true
                 }, {
                     label: 'Meta (85%)',
                     data: [85, 85, 85, 85],
                     borderColor: '#27ae60',
                     borderDash: [5, 5],
-                    tension: 0.1
-                }]
-            },
-            options: { 
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: { 
-                    y: { 
-                        min: 50, 
-                        max: 100,
-                        ticks: { font: { size: 10 } },
-                        grid: { display: false } 
-                    } 
-                } 
-            }
-        });
-
-        // Chart: Ambulatório (Line - Jan-Abr)
-        new Chart(document.getElementById('ambulatorioChart'), {
-            type: 'line',
-            data: {
-                labels: ['Jan', 'Fev', 'Mar', 'Abr'],
-                datasets: [{
-                    label: 'Realizado (%)',
-                    data: [54, 55, 59, 66],
-                    borderColor: '#e74c3c',
-                    backgroundColor: 'rgba(231, 76, 60, 0.1)',
-                    tension: 0.1
-                }, {
-                    label: 'Meta (85%)',
-                    data: [85, 85, 85, 85],
-                    borderColor: '#27ae60',
-                    borderDash: [5, 5],
-                    tension: 0.1
-                }]
-            },
-            options: { 
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: { 
-                    y: { 
-                        min: 40, 
-                        max: 100,
-                        ticks: { font: { size: 10 } },
-                        grid: { display: false } 
-                    } 
-                } 
-            }
-        });
-
-        // Gráfico de Infecção Hospitalar (Dados Jan-Abr 2025)
-        const infeccaoCtx = document.getElementById('infeccaoChart').getContext('2d');
-        const infeccaoChart = new Chart(infeccaoCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Jan/25', 'Fev/25', 'Mar/25', 'Abr/25'],
-                datasets: [{
-                    label: 'Taxa de Infecção (%)',
-                    data: [1.53, 0.5, 0.67, 0.66],
-                    backgroundColor: 'rgba(39, 174, 96, 0.7)',
-                    borderColor: 'rgba(39, 174, 96, 1)',
-                    borderWidth: 1,
-                    maxBarThickness: 20 // Barras mais finas
+                    tension: 0.1,
+                    pointRadius: 0
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 5, // Meta é < 5%
-                        ticks: {
-                            callback: function(value) { return value + '%' },
-                            font: { size: 10 } // Fonte menor
-                        },
-                        grid: { display: false } // Remove linhas de grade para limpar o visual
-                    }
-                }
+                scales: { y: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%' } } },
+                plugins: { legend: { display: false } }
             }
         });
+        charts.push(ocupacaoChart);
 
-        // Gráfico de Mortalidade (Dados Jan-Abr 2025)
-        const mortalidadeCtx = document.getElementById('mortalidadeChart').getContext('2d');
-        const mortalidadeChart = new Chart(mortalidadeCtx, {
-            type: 'bar',
+        // Chart: Ambulatorio (simple doughnut indicator)
+        const ambulatorioChart = new Chart(document.getElementById('ambulatorioChart'), {
+            type: 'doughnut',
             data: {
-                labels: ['Jan/25', 'Fev/25', 'Mar/25', 'Abr/25'],
+                labels: ['Realizado', 'Meta não atingida'],
                 datasets: [{
-                    label: 'Taxa de Mortalidade (%)',
-                    data: [2.84, 2.84, 2.77, 3.31],
-                    backgroundColor: 'rgba(39, 174, 96, 0.7)',
-                    borderColor: 'rgba(39, 174, 96, 1)',
-                    borderWidth: 1,
-                    maxBarThickness: 20 // Barras mais finas
+                    data: [59, 26],
+                    backgroundColor: ['#e74c3c', '#ecf0f1']
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 4, // Meta é < 3.5%
-                        ticks: {
-                            callback: function(value) { return value + '%' },
-                            font: { size: 10 } // Fonte menor
-                        },
-                        grid: { display: false }
-                    }
-                }
+                plugins: { legend: { display: false } }
             }
         });
+        charts.push(ambulatorioChart);
 
-        // Logout
-        document.getElementById('logout-btn').addEventListener('click', e => {
-            e.preventDefault();
-            alert('Simulação de Logout realizada.');
+        // Chart: Infecção (gauge-like small chart)
+        const infeccaoChart = new Chart(document.getElementById('infeccaoChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Infecção'],
+                datasets: [{
+                    label: 'Taxa (%)',
+                    data: [0.8],
+                    backgroundColor: ['#27ae60'],
+                    maxBarThickness: 40
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                scales: {
+                    x: { beginAtZero: true, max: 5, ticks: { callback: v => v + '%' } },
+                    y: { display: false }
+                },
+                plugins: { legend: { display: false } }
+            }
         });
+        charts.push(infeccaoChart);
+
+        // Chart: Mortalidade (similar)
+        const mortalidadeChart = new Chart(document.getElementById('mortalidadeChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Mortalidade'],
+                datasets: [{
+                    label: 'Taxa (%)',
+                    data: [2.9],
+                    backgroundColor: ['#e67e22'],
+                    maxBarThickness: 40
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                scales: {
+                    x: { beginAtZero: true, max: 10, ticks: { callback: v => v + '%' } },
+                    y: { display: false }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+        charts.push(mortalidadeChart);
+
+        // Responsividade adicional: redimensionar charts on window resize
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                charts.forEach(c => { try { c.resize(); } catch (e) {} });
+            }, 150);
+        });
+
+        // Initial resize to ensure proper rendering on load
+        window.addEventListener('load', () => {
+            setTimeout(() => charts.forEach(c => { try { c.resize(); } catch (e) {} }), 250);
+        });
+
     </script>
 </body>
 </html>
